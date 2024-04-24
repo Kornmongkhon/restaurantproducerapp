@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Chef Produce
+actor Chefs as c
+
+entity API as api
+
+database Kitchen_Station as ks
+
+c -> api : PATCH /api/v1/restaurant/sendOrder
+api->api : validate order
+
+alt isDone
+    api -> ks : update status food by ordStatus
+    ks -> api : receive update status
+    api -> c : response notify status done
+
+else isNotDone
+    api -> c : response notify not done
+
+end
+@enduml

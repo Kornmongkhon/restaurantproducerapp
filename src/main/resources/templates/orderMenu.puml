@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Order Menu
+
+actor Customer as c
+actor Waitress as w
+
+entity API as a
+
+database Kitchen_Station as ks
+c --> w : order a menu
+
+w -> a : POST /api/v1/restaurant/orderMenu
+a -> a : validate order
+
+alt isFoodMenu
+    a -> ks : insert into db by ordID
+    ...200 OK...
+    a -> w : insert success
+    w -> c : send ordID to customer
+else isNotFoodMenu
+    ...404 Not Found...
+    a -> w :response error
+
+end
+
+
+@enduml

@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+title Restaurant
+
+actor customer as c
+actor waitress as w
+
+'entity tablet as t #black
+
+entity kitchen_station as ks
+database orderDb as od
+
+'queue kafka
+
+autonumber
+c --> w : call to order
+w --> c : walking to customer
+c --> w : order a menu
+
+'w --> t : input order
+'w -> t : hit send button
+w -> ks : POST /api/v1/restaurant/order
+ks -> ks : validate input
+activate ks
+'   seafood
+    alt isPoissonnierMenu
+        ks -> od : insert order by chef role
+        od -> ks : inserted and get status
+    else
+'       meat or steak
+        alt isSaucierMenu
+            ks -> od: insert order by chef role
+            od -> ks : inserted and get status
+        else
+'           soup
+            alt isPotagerMenu
+                ks -> od: insert order by chef role
+                od -> ks : inserted and get status
+            else
+                alt isPâtissierMenu
+                    ks -> od: insert order by chef role
+                    od -> ks : inserted and get status
+                else
+                    alt isDone
+                        ks -> ks : validate status
+                        ks -> od : update status
+                        ks -> w : send notify
+                        w -> c : serve order
+                    end
+                end
+            end
+        end
+    end
+
+deactivate ks
+
+@enduml

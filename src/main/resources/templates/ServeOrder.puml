@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+title Serve Order
+
+actor Customer as c
+actor Waitress as w
+
+entity API as api
+
+database Kitchen_Station as ks
+w -> api : GET /api/v1/restaurant/checkOrder
+api -> api : validate order
+alt isStatusDone
+    api -> ks : find order by ordID
+    ks -> api : receive order
+    api -> w : response order success
+    w -> c : serve order to customer
+else isStatusNotDone
+    api -> w : response order is being processed
+end
+@enduml

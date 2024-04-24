@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+Title Chef Process
+actor Chefs as c
+
+entity API as a
+
+database Kitchen_Station as ks
+
+c -> a : GET /api/v1/restaurant/getOrder
+a -> ks : find allOrder
+ks -> a : receive order lists
+a -> a : validate order
+
+alt isOrder
+    a -> ks : find food by foodType
+    ks -> a : receive food
+    a -> a : validate food
+alt isFoodOnRole
+     a -> c : send food to chefs
+else isFoodTypeNotFound
+    a -> c : response error
+end
+
+else isNotOrder
+    a -> c : response error
+end
+
+@enduml
