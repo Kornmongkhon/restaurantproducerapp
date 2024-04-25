@@ -15,10 +15,10 @@ import java.util.Map;
 @Service
 public class RestaurantService {
 
-    @Value("${kafka.topics.restaurant}")
+    @Value("${kafka.topics.restaurant.name}")
     private String restaurantTopic;
 
-    @Value("${kafka.topics.served}")
+    @Value("${kafka.topics.served.name}")
     private String restaurantServedTopic;
 
     private KafkaComponent kafkaComponent;

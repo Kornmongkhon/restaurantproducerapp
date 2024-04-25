@@ -5,7 +5,7 @@
 #spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring:
   application:
-    name: restuarantapp
+    name: restuarantproducerapp
   datasource:
     username: user
     password: password
@@ -14,5 +14,12 @@ spring:
 kafka:
   server: localhost:29092
   topics:
-    restaurant: restaurant.topic
-    served: restaurantServed.topic
+    restaurant:
+      name: restaurant.topic
+      partitions: 2
+    served:
+      name: restaurantServed.topic
+      partitions: 2
+server:
+  servlet:
+    context-path: /restaurantproducer
